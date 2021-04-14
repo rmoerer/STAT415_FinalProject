@@ -2,6 +2,7 @@ A Bayesian Analysis of Receiving Performance in the 2020 NFL Season
 Using a Hierarchical Model
 ================
 Austin Berg and Ryan Moerer
+3/12/2021
 
 ### Motivation
 
@@ -102,8 +103,8 @@ model can be seen in the code below.
 
 ``` r
 # read in data
-pbp_data <- read.csv("./data/2021_nfl_receptions_pbp.csv")
-season_data <- read.csv("./data/2021_nfl_receptions_season.csv")
+pbp_data <- read.csv("./data/2020_nfl_receptions_pbp.csv")
+season_data <- read.csv("./data/2020_nfl_receptions_season.csv")
 
 # order pbp data by player id
 pbp_data$receiver_id <- as.factor(pbp_data$receiver_id)
@@ -202,7 +203,7 @@ bayesplot::mcmc_combo(posterior_sample,
                       )
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Model1: Normal Likelihood-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Model1: Normal Likelihood-1.png" style="display:block; margin:auto;" />
 
 When we look at the trace plots and the posterior distributions,
 everything seems to look pretty good. Almost all of our posterior
@@ -230,7 +231,7 @@ season is shown below.
 hist(yds, freq=FALSE, breaks = 50)
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Observed Data Viz-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Observed Data Viz-1.png" style="display:block; margin:auto;" />
 
 The distribution is quite clearly right-skewed and not normally
 distributed. Let’s use posterior predictive simulation to see what a
@@ -257,7 +258,7 @@ for (i in 1:n_samples){
 }
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Sim 1-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Sim 1-1.png" style="display:block; margin:auto;" />
 
 Yikes, not a good fit at all. The skewness in the data is clearly not
 accounted for by our model. Much *fewer* negative values were observed
@@ -368,7 +369,7 @@ bayesplot::mcmc_combo(posterior_sample,
                       pars = c("mu", "sigma", "tau", "mu_p", "kappa_p", "mu_l", "tau_l"))
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-1-1.png" style="display:block; margin:auto;" />
 
 ``` r
 # generate histogram of observed data
@@ -390,7 +391,7 @@ for (i in 1:n_samples){
 }
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-2-1.png" style="display:block; margin:auto;" />
 
 The Gamma likelihood does not appear to do the best job either as large
 gains still appear to happen more than the model predicts and gains in
@@ -506,7 +507,7 @@ posterior_sample_sens <- coda.samples(model_sens,
 mcmc_combo(posterior_sample_sens[, c("mu", "mu_p", "mu_l")])
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-3-1.png" style="display:block; margin:auto;" />
 
 As we can see, despite choosing wildly different priors for *μ*,
 *μ*<sub>*λ*</sub>, and *μ*<sub>*p*</sub>, the posterior distributions
@@ -534,7 +535,7 @@ mu_l <- post_matrix[, "mu_l"]
 plotPost(mu_l)
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/mu_l Posterior-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/mu_l Posterior-1.png" style="display:block; margin:auto;" />
 
 As one can see, there is a 95% posterior probability that league-wide
 mean targets per game is between 3.4 targets and 4.0 targets.
@@ -544,7 +545,7 @@ mean targets per game is between 3.4 targets and 4.0 targets.
 plotPost(mu_p)
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/mu_p Posterior-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/mu_p Posterior-1.png" style="display:block; margin:auto;" />
 
 We also see that the true league-wide catch rate is between 0.67 and
 0.69 with a posterior probability of 95%.
@@ -554,7 +555,7 @@ We also see that the true league-wide catch rate is between 0.67 and
 plotPost(mu)
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/mu Posterior-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/mu Posterior-1.png" style="display:block; margin:auto;" />
 
 Furthermore, there is a posterior probability of 95% that the
 league-wide mean yards gained per reception is between 10.7 and 11.4.
@@ -568,10 +569,10 @@ for all three parameters are within the aforementioned intervals.
 cor(cbind(mu, mu_l, mu_p))
 ```
 
-    ##                 mu          mu_l        mu_p
-    ## mu    1.0000000000 -0.0002389526 -0.01710587
-    ## mu_l -0.0002389526  1.0000000000 -0.00991971
-    ## mu_p -0.0171058722 -0.0099197103  1.00000000
+    ##                mu         mu_l         mu_p
+    ## mu    1.000000000 -0.040904969  0.005574287
+    ## mu_l -0.040904969  1.000000000 -0.006462245
+    ## mu_p  0.005574287 -0.006462245  1.000000000
 
 ### Interpreting the Results for Individual Players
 
@@ -614,7 +615,7 @@ phi <- player_summary$Name[player_summary$Team=="PHI"]
 caterplot(player_yds[, phi])
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-4-1.png" style="display:block; margin:auto;" />
 
 The points represent the mean of the posterior distribution of yards
 gained on receptions for each specific player, while the thick and thin
@@ -655,7 +656,7 @@ player_summary %>%
         axis.text.x = element_blank())
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-5-1.png" style="display:block; margin:auto;" />
 
 The lines for each particular player start at the players raw average
 for yards gained on receptions as seen in data from 2020 and the lines
@@ -670,14 +671,14 @@ parameters as well.
 caterplot(player_targets[, phi])
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-6-1.png" style="display:block; margin:auto;" />
 
 ``` r
 # catch rate caterplot
 caterplot(player_catchRt[, phi])
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-6-2.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/unnamed-chunk-6-2.png" style="display:block; margin:auto;" />
 
 Of course, with estimates for three areas of football for 335 players,
 it can be quite difficult to fully comprehend what the Bayesian
@@ -699,7 +700,7 @@ ggplot(player_summary, aes(lambda_j_post_mean, mu_j_post_mean, color = Rec)) +
   labs(color = '2020 Catches')
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 1-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 1-1.png" style="display:block; margin:auto;" />
 
 This plot gives you a sense of the posterior means for both targets per
 game and yards gained per reception. It is also quite easy to see the
@@ -725,7 +726,7 @@ ggplot(player_summary, aes(Catch_Rt, p_j_post_mean,  color = Rec)) +
   annotate("text", x = 0.625, y = 0.52, label = paste("Slope = 1"), color = 'black', fontface = 'bold', angle = 0)
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 2-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 2-1.png" style="display:block; margin:auto;" />
 
 As mentioned before, a key feature of this model is that it provides
 performance estimates for players with little or no data on them based
@@ -752,7 +753,7 @@ ggplot(player_summary, aes(p_j_post_sd, mu_j_post_sd, color = Rec)) +
   labs(color = '2020 Catches')
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 3-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 3-1.png" style="display:block; margin:auto;" />
 
 This plot simply shows that posterior distributions for players with
 lots of data from the 2020 NFL season has little variance compared to
@@ -772,7 +773,7 @@ ggplot(player_summary, aes(p_j_post_mean, mu_j_post_mean, color = Rec)) +
   labs(color = '2020 Catches')
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 4-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Results 4-1.png" style="display:block; margin:auto;" />
 
 Interesting. When we originally specified the model, we assumed that
 yards per reception and catch rate were independent. However, when we
@@ -846,7 +847,7 @@ ggplot(total_yards, aes(x = yards, fill = over)) +
   labs(fill = 'Did the Over Hit?')
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Predictive Individuals-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Predictive Individuals-1.png" style="display:block; margin:auto;" />
 
 As is shown, the posterior predictive distribution can be used to see if
 your model gives an edge to the over or the under.
@@ -911,7 +912,7 @@ ggplot(df, aes(x = value, fill = variable)) +
   ylab('Density')
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Predictive Teams-1.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Predictive Teams-1.png" style="display:block; margin:auto;" />
 
 ``` r
 # compute total yards
@@ -933,7 +934,7 @@ ggplot(total_yards, aes(x = t1_minus_t2, fill = factor(positive))) +
   annotate("text", x = 220, y = 1000, label = paste("All-Stars Win Share \n=\n", t1_more), color = 'black', fontface = 'bold')
 ```
 
-<img src="STAT415_FinalProject_files/figure-gfm/Posterior Predictive Teams-2.png" style="display: block; margin: auto;" />
+<img src="STAT415_FinalProject_files/figure-gfm/Posterior Predictive Teams-2.png" style="display:block; margin:auto;" />
 
 As you can see, the posterior predictive model assigns significant
 probability to the All-Star caliber Team 1 gaining more yards than

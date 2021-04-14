@@ -1,7 +1,10 @@
 ---
 title: "A Bayesian Analysis of Receiving Performance in the 2020 NFL Season Using a Hierarchical Model"
 author: "Austin Berg and Ryan Moerer"
-output: github_document
+date: "3/12/2021"
+output: 
+  github_document: default
+  html_document: default
 ---
 
 ```{r SETUP, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -13,7 +16,8 @@ if (!require("pacman"))
 pacman::p_load(pacman,tidyverse,ggrepel,ggimage,rjags,bayesplot,bayesboot,mcmcplots)
 
 # knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.align = 'center')
+knitr::opts_chunk$set(fig.width=6, fig.height=4,
+                      out.extra = 'style="display:block; margin:auto;"')
 
 ```
 
@@ -64,8 +68,8 @@ The model was implemented in JAGS using the R package `rjags`. The full model ca
 
 ```{r Model1: Normal Likelihood, fig.height=10, fig.width=7, message=FALSE}
 # read in data
-pbp_data <- read.csv("./data/2021_nfl_receptions_pbp.csv")
-season_data <- read.csv("./data/2021_nfl_receptions_season.csv")
+pbp_data <- read.csv("./data/2020_nfl_receptions_pbp.csv")
+season_data <- read.csv("./data/2020_nfl_receptions_season.csv")
 
 # order pbp data by player id
 pbp_data$receiver_id <- as.factor(pbp_data$receiver_id)
