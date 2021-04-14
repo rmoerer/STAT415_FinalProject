@@ -3,8 +3,8 @@ title: "A Bayesian Analysis of Receiving Performance in the 2020 NFL Season Usin
 author: "Austin Berg and Ryan Moerer"
 date: "3/12/2021"
 output: 
-  github_document: default
   html_document: default
+  github_document: default
 ---
 
 ```{r SETUP, include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
